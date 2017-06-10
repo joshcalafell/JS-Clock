@@ -36,7 +36,7 @@ function renderHands(hands) {
   const cY = 150;
   const offset = 1/2*Math.PI;
 
-   _.forOwn(hands, function(value, key) {
+  _.forOwn(hands, function(value, key) {
     const { count, units, length, color, lineWidth } = value;
     // Calculate angle (theta) and determine 
     // the cartesian coords of the ending (x, y)
