@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css?family=Cabin|Cormorant+SC|Karla|Merriweather|Oswald|Open+Sans|Raleway|Cedarville+Cursive|Great+Vibes');
+
+body {
+  margin: 0;
+  background: #161616;
+  color: white;
+}
+.header {
+  font-family: 'Great Vibes';
+  text-align: center;
+}
+.title {
+  margin-bottom: -40px;
+}

@@ -1,2 +1,3 @@
-# JS-Clock
-A simple Analog Clock written in ES6/ES7 JavaScript
+A Pen created at CodePen.io. You can find this one at http://codepen.io/rabbitfighter81/pen/EmoOJN.
+
+ 
