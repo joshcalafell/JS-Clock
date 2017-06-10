@@ -5,7 +5,7 @@ canvas.width = window.innerWidth;
 canvas.height= window.innerHeight;
 
 const Hands = (date) => {
-  return Object.assign({
+  return _.assign({
     'hours': {
       'units': 12,
       'length': 50,
@@ -31,54 +31,58 @@ const Hands = (date) => {
 }
 
 function renderHands(hands) {
-  const { innerWidth: w, innerHeight: h } = window;
+  const { innerWidth: w } = window;
   const cX = w/2;
-  const cY = h/2;
+  const cY = 150;
   const offset = 1/2*Math.PI;
 
-  for (let i in hands) {
-    const { count, units, length, color, lineWidth } = hands[i];
+   _.forOwn(hands, function(value, key) {
+    const { count, units, length, color, lineWidth } = value;
+    // Calculate angle (theta) and determine 
+    // the cartesian coords of the ending (x, y)
+    // of each line using basic trig. 
+    // Remeber 'SohCahToa'???
     const theta = count%units * 360/units * Math.PI/180;
     const d = length;
     const endX = cX + d * Math.cos(theta - offset);
     const endY = cY + d * Math.sin(theta - offset);
-    
-    ctx.strokeStyle = hands[i].color;
-    ctx.lineWidth = hands[i].lineWidth;
+    // Stroke
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
     ctx.beginPath();
     ctx.moveTo(cX, cY);
-    ctx.lineTo(endX,endY);
+    ctx.lineTo(endX, endY);
     ctx.stroke();
-  }
+  });
   
 }
 
 function renderClock() {
-  const { innerWidth: w, innerHeight: h } = window;
-
+  const { innerWidth: w } = window;
+  // Outer circle
   ctx.strokeStyle = '#FFF';
   ctx.beginPath();
   ctx.lineWidth = 7;
-  ctx.arc(w/2, h/2, 80, 0, 2*Math.PI);
+  ctx.arc(w/2, 150, 80, 0, 2*Math.PI);
   ctx.stroke();
-  
+  // Inner circle
   ctx.beginPath();
   ctx.lineWidth = 5;
-  ctx.arc(w/2, h/2, 6, 0, 2*Math.PI);
+  ctx.arc(w/2, 150, 4, 0, 2*Math.PI);
   ctx.stroke();
-
 }
 
-function render() {
+/**
+* Render one frame
+*/
+function frame() {
   const { innerWidth: w, innerHeight: h } = window;
   ctx.clearRect(0, 0, w, h);
-  const hands = Hands(new Date());
+  const date = new Date();
+  const hands = Hands(date);
   renderHands(hands);
   renderClock();
 }
 
-// Tick every second
-setInterval(() => { render() }, 1000);
-
-
-
+// Render tick every second
+setInterval(()=>{frame()},1000);

@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css?family=Great+Vibes');
+
+@mixin linear-gradient($direction, $color-stops...) {
+  // Direction has been omitted and happens to be a color-stop
+  @if is-direction($direction) == false {
+    $color-stops: $direction, $color-stops;
+    $direction: 180deg;
+  }
+
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(black, #666);
+  color: white;
+}
+.header {
+  font-size: 1.3em;
+  font-family: 'Great Vibes';
+  text-align: center;
+}
+.title {
+  margin-bottom: -40px;
+}
