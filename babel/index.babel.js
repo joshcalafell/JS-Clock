@@ -72,9 +72,6 @@ function renderClock() {
   ctx.stroke();
 }
 
-/**
-* Render one frame
-*/
 function frame() {
   const { innerWidth: w, innerHeight: h } = window;
   ctx.clearRect(0, 0, w, h);
