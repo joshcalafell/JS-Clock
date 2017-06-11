@@ -10,7 +10,7 @@ const Coords = (startX, startY, endX, endY) => {
       x: startX,
       y: startY
     }),
-    end : _.assign({
+    end: _.assign({
       x: endX,
       y: endY
     })
