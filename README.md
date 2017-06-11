@@ -1,12 +1,12 @@
 # JS Clock
 A Pen created at CodePen.io. You can find this one at http://codepen.io/rabbitfighter81/pen/EmoOJN.
 
-# Author
-* Joshua.Michael.Waggoner@gmail.com
-
 # Description
 
 Written in **ES6/ES7** and **Lodash**, and heavily driven by **prototypal inheritance** and **factory functions**, this scipt uses basic old-skool canvas rendering methods and a bit of SohCahToa (remember 9th grade?), to draw an analog clock. Also uses SASS, and a cool gradient mixin for the background.
+
+# Licence
+Copyright (c) 2017 Joshua Michael Waggoner under [MIT LICENCE](LICENCE)
 
 # About Factory Functions
 
