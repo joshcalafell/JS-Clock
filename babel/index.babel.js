@@ -5,16 +5,16 @@ canvas.width = window.innerWidth;
 canvas.height= window.innerHeight;
 
 const Coords = (startX, startY, endX, endY) => {
-  return {
-    start: {
+  return _.assign({
+    start: _.assign({
       x: startX,
       y: startY
-    },
-    end : {
+    }),
+    end : _.assign({
       x: endX,
       y: endY
-    }
-  }
+    })
+  });
 }
 
 const ClockNumbers = () => {
