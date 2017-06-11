@@ -4,6 +4,19 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height= window.innerHeight;
 
+const Coords = (startX, startY, endX, endY) => {
+  return {
+    start: {
+      x: startX,
+      y: startY
+    },
+    end : {
+      x: endX,
+      y: endY
+    }
+  }
+}
+
 const ClockNumbers = () => {
   return new Array(12).fill(undefined).map((val, idx) => {
     const { innerWidth: w } = window;
@@ -15,8 +28,7 @@ const ClockNumbers = () => {
     const endY = cY + 100 * Math.sin(theta - offset);
     return _.assign({
       unit: idx || 12,
-      start: { x: w/2, y: 150 },
-      end: { x: endX, y: endY }
+      coords: Coords(cX, cY, endX, endY)
     });
   });
 }
@@ -54,8 +66,7 @@ const ClockHands = (date) => {
     const endX = cX + hand.length * Math.cos(theta - offset);
     const endY = cY + hand.length * Math.sin(theta - offset);
     return _.assign({}, hand, {
-      start: { x: w/2, y: 150 },
-      end: { x: endX, y: endY }
+      coords: Coords(cX, cY, endX, endY)
     });
   });
 }
@@ -66,8 +77,8 @@ function renderClockNumbers(numbers) {
     ctx.font = '12px Acme';
     ctx.fillText(
       number.unit,
-      number.end.x,
-      number.end.y
+      number.coords.end.x,
+      number.coords.end.y
     );  
   });
 }
@@ -77,8 +88,8 @@ function renderClockHands(hands) {
     ctx.strokeStyle = hand.color;
     ctx.lineWidth = hand.width;
     ctx.beginPath();
-    ctx.moveTo(hand.start.x, hand.start.y);
-    ctx.lineTo(hand.end.x, hand.end.y);
+    ctx.moveTo(hand.coords.start.x, hand.coords.start.y);
+    ctx.lineTo(hand.coords.end.x, hand.coords.end.y);
     ctx.stroke(); 
   });
 }
