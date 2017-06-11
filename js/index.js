@@ -20,7 +20,7 @@ var Coords = function Coords(startX, startY, endX, endY) {
 };
 
 var ClockNumbers = function ClockNumbers() {
-  return new Array(12).fill(undefined).map(function (val, idx) {
+  return Array(12).fill(undefined).map(function (val, idx) {
     var _window = window;
     var w = _window.innerWidth;
 

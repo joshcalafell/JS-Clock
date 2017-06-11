@@ -18,7 +18,7 @@ const Coords = (startX, startY, endX, endY) => {
 }
 
 const ClockNumbers = () => {
-  return new Array(12).fill(undefined).map((val, idx) => {
+  return Array(12).fill(undefined).map((val, idx) => {
     const { innerWidth: w } = window;
     const cX = w/2-3;
     const cY = 155;
