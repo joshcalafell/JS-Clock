@@ -6,68 +6,86 @@ var ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-var Hands = function Hands(date) {
-  return _.assign({
-    'hours': {
-      'units': 12,
-      'length': 50,
-      'color': '#F00',
-      'lineWidth': 6,
-      'count': date.getHours()
-    },
-    'minutes': {
-      'units': 60,
-      'length': 65,
-      'color': '#DDD',
-      'lineWidth': 4,
-      'count': date.getMinutes()
-    },
-    'seconds': {
-      'units': 60,
-      'length': 80,
-      'color': '#FFF',
-      'lineWidth': 4,
-      'count': date.getSeconds()
-    }
+var ClockNumbers = function ClockNumbers() {
+  return new Array(12).fill(undefined).map(function (val, idx) {
+    var _window = window;
+    var w = _window.innerWidth;
+
+    var cX = w / 2 - 3;
+    var cY = 155;
+    var offset = 1 / 2 * Math.PI;
+    var theta = idx * 5 * 5 * 360 / 12 * Math.PI / 180;
+    var endX = cX + 100 * Math.cos(theta - offset);
+    var endY = cY + 100 * Math.sin(theta - offset);
+    return _.assign({
+      unit: idx || 12,
+      start: { x: w / 2, y: 150 },
+      end: { x: endX, y: endY }
+    });
   });
 };
 
-function renderHands(hands) {
-  var _window = window;
-  var w = _window.innerWidth;
+var ClockHands = function ClockHands(date) {
+  return [{
+    type: 'hours',
+    count: date.getHours(),
+    max: 12,
+    length: 50,
+    color: '#F00',
+    width: 5
+  }, {
+    type: 'minutes',
+    count: date.getMinutes(),
+    max: 60,
+    length: 65,
+    color: '#DDD',
+    width: 4
+  }, {
+    type: 'seconds',
+    count: date.getSeconds(),
+    max: 60,
+    length: 80,
+    color: '#FFF',
+    width: 3
+  }].map(function (hand, idx) {
+    var _window2 = window;
+    var w = _window2.innerWidth;
 
-  var cX = w / 2;
-  var cY = 150;
-  var offset = 1 / 2 * Math.PI;
+    var cX = w / 2;
+    var cY = 155;
+    var offset = 1 / 2 * Math.PI;
+    var theta = hand.count % hand.max * 360 / hand.max * Math.PI / 180;
+    var endX = cX + hand.length * Math.cos(theta - offset);
+    var endY = cY + hand.length * Math.sin(theta - offset);
+    return _.assign({}, hand, {
+      start: { x: w / 2, y: 150 },
+      end: { x: endX, y: endY }
+    });
+  });
+};
 
-  _.forOwn(hands, function (value, key) {
-    var count = value.count;
-    var units = value.units;
-    var length = value.length;
-    var color = value.color;
-    var lineWidth = value.lineWidth;
-    // Calculate angle (theta) and determine
-    // the cartesian coords of the ending (x, y)
-    // of each line using basic trig.
-    // Remeber 'SohCahToa'???
+function renderClockNumbers(numbers) {
+  _.forEach(numbers, function (number, idx) {
+    ctx.fillStyle = '#FFF';
+    ctx.font = '12px Acme';
+    ctx.fillText(number.unit, number.end.x, number.end.y);
+  });
+}
 
-    var theta = count % units * 360 / units * Math.PI / 180;
-    var d = length;
-    var endX = cX + d * Math.cos(theta - offset);
-    var endY = cY + d * Math.sin(theta - offset);
-    // Stroke
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
+function renderClockHands(hands) {
+  _.forEach(hands, function (hand, idx) {
+    ctx.strokeStyle = hand.color;
+    ctx.lineWidth = hand.width;
     ctx.beginPath();
-    ctx.moveTo(cX, cY);
-    ctx.lineTo(endX, endY);
+    ctx.moveTo(hand.start.x, hand.start.y);
+    ctx.lineTo(hand.end.x, hand.end.y);
     ctx.stroke();
   });
 }
 
-function renderClock() {
-  var _window2 = window;
-  var w = _window2.innerWidth;
+function renderClockOutline() {
+  var _window3 = window;
+  var w = _window3.innerWidth;
   // Outer circle
 
   ctx.strokeStyle = '#FFF';
@@ -82,19 +100,18 @@ function renderClock() {
   ctx.stroke();
 }
 
-/**
-* Render one frame
-*/
 function frame() {
-  var _window3 = window;
-  var w = _window3.innerWidth;
-  var h = _window3.innerHeight;
+  var _window4 = window;
+  var w = _window4.innerWidth;
+  var h = _window4.innerHeight;
 
   ctx.clearRect(0, 0, w, h);
   var date = new Date();
-  var hands = Hands(date);
-  renderHands(hands);
-  renderClock();
+  var hands = ClockHands(date);
+  var numbers = ClockNumbers();
+  renderClockHands(hands);
+  renderClockNumbers(numbers);
+  renderClockOutline();
 }
 
 // Render tick every second

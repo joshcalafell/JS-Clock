@@ -4,60 +4,86 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height= window.innerHeight;
 
-const Hands = (date) => {
-  return _.assign({
-    'hours': {
-      'units': 12,
-      'length': 50,
-      'color': '#F00',
-      'lineWidth': 6,
-      'count': date.getHours()
-    },
-    'minutes': {
-      'units': 60,
-      'length': 65,
-      'color': '#DDD',
-      'lineWidth': 4,
-      'count': date.getMinutes()
-    },
-    'seconds': {
-      'units': 60,
-      'length': 80,
-      'color': '#FFF',
-      'lineWidth': 4,
-      'count': date.getSeconds()
-    }
+const ClockNumbers = () => {
+  return new Array(12).fill(undefined).map((val, idx) => {
+    const { innerWidth: w } = window;
+    const cX = w/2-3;
+    const cY = 155;
+    const offset = 1/2*Math.PI;
+    const theta = idx*5*5 * 360/12 * Math.PI/180;
+    const endX = cX + 100 * Math.cos(theta - offset);
+    const endY = cY + 100 * Math.sin(theta - offset);
+    return _.assign({
+      unit: idx || 12,
+      start: { x: w/2, y: 150 },
+      end: { x: endX, y: endY }
+    });
   });
 }
 
-function renderHands(hands) {
-  const { innerWidth: w } = window;
-  const cX = w/2;
-  const cY = 150;
-  const offset = 1/2*Math.PI;
+const ClockHands = (date) => {
+  return [{ 
+      type: 'hours', 
+      count: date.getHours(), 
+      max: 12, 
+      length: 50,
+      color: '#F00',
+      width: 5
+    }, { 
+      type: 'minutes', 
+      count: date.getMinutes(), 
+      max: 60, 
+      length: 65,
+      color: '#DDD',
+      width: 4
+    }, { 
+      type: 'seconds', 
+      count: date.getSeconds(), 
+      max: 60, 
+      length: 80,
+      color: '#FFF',
+      width: 3
+  }].map((hand, idx) => {
+    const { innerWidth: w } = window;
+    const cX = w/2;
+    const cY = 155;
+    const offset = 1/2*Math.PI;
+    const theta = hand.count%hand.max 
+      * 360/hand.max 
+      * Math.PI/180;
+    const endX = cX + hand.length * Math.cos(theta - offset);
+    const endY = cY + hand.length * Math.sin(theta - offset);
+    return _.assign({}, hand, {
+      start: { x: w/2, y: 150 },
+      end: { x: endX, y: endY }
+    });
+  });
+}
 
-  _.forOwn(hands, function(value, key) {
-    const { count, units, length, color, lineWidth } = value;
-    // Calculate angle (theta) and determine 
-    // the cartesian coords of the ending (x, y)
-    // of each line using basic trig. 
-    // Remeber 'SohCahToa'???
-    const theta = count%units * 360/units * Math.PI/180;
-    const d = length;
-    const endX = cX + d * Math.cos(theta - offset);
-    const endY = cY + d * Math.sin(theta - offset);
-    // Stroke
-    ctx.strokeStyle = color;
-    ctx.lineWidth = lineWidth;
+function renderClockNumbers(numbers) {
+  _.forEach(numbers, (number, idx) => {
+    ctx.fillStyle = '#FFF';
+    ctx.font = '12px Acme';
+    ctx.fillText(
+      number.unit,
+      number.end.x,
+      number.end.y
+    );  
+  });
+}
+
+function renderClockHands(hands) {
+  _.forEach(hands, (hand, idx) => {
+    ctx.strokeStyle = hand.color;
+    ctx.lineWidth = hand.width;
     ctx.beginPath();
-    ctx.moveTo(cX, cY);
-    ctx.lineTo(endX, endY);
-    ctx.stroke();
+    ctx.moveTo(hand.start.x, hand.start.y);
+    ctx.lineTo(hand.end.x, hand.end.y);
+    ctx.stroke(); 
   });
-  
 }
 
-function renderClock() {
+function renderClockOutline() {
   const { innerWidth: w } = window;
   // Outer circle
   ctx.strokeStyle = '#FFF';
@@ -76,9 +102,11 @@ function frame() {
   const { innerWidth: w, innerHeight: h } = window;
   ctx.clearRect(0, 0, w, h);
   const date = new Date();
-  const hands = Hands(date);
-  renderHands(hands);
-  renderClock();
+  const hands = ClockHands(date);
+  const numbers = ClockNumbers();
+  renderClockHands(hands);
+  renderClockNumbers(numbers)
+  renderClockOutline();
 }
 
 // Render tick every second
