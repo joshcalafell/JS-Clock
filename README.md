@@ -42,7 +42,7 @@ No ambiguity about using `new`. Don’t. (It will make `this` behave badly, see 
 
 3. It may perform slower than a constructor function in micro-optimization benchmarks. Be sure to test in the context of your app if this is a concern for you. 
 
-See the article I got this info from [Here]https://medium.com/javascript-scene/javascript-factory-functions-vs-constructor-functions-vs-classes-2f22ceddf33e)
+See the article I got this info from [Here](https://medium.com/javascript-scene/javascript-factory-functions-vs-constructor-functions-vs-classes-2f22ceddf33e)
 
 
 
