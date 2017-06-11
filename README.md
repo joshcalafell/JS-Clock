@@ -6,7 +6,7 @@ A Pen created at CodePen.io. You can find this one at http://codepen.io/rabbitfi
 
 # Description
 
-Written in ES6, this pen uses basic canvas rendering methods and a bit of SohCahToa, to draw an analog clock. Uses a SASS gradient mixin for the background. Makes use of factory functions and lodash.
+Written in **ES6/ES7** and **Lodash**, and heavily driven by **prototypal inheritance** and **factory functions**, this scipt uses basic old-skool canvas rendering methods and a bit of SohCahToa (remember 9th grade?), to draw an analog clock. Also uses SASS, and a cool gradient mixin for the background.
 
 # About Factory Functions
 
