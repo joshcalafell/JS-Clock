@@ -1,16 +1,20 @@
-@import url("https://fonts.googleapis.com/css?family=Great+Vibes|Acme");
+@import url("https://fonts.googleapis.com/css?family=Great+Vibes:300,500");
 body {
   margin: 0;
-  background: linear-gradient(black, #666);
   color: white;
+  background-image: url('../assets/Bullseye-Gradient.svg');
+  background-size: cover;
 }
 
 .header {
   font-size: 1.3em;
   font-family: 'Great Vibes';
+  font-weight: 300;
   text-align: center;
 }
 
-.title {
-  margin-bottom: -40px;
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
